@@ -131,6 +131,15 @@
             display: flex;
         }
 
+        .thank-you-message {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .thank-you-message.active {
+            display: block;
+        }
+
         .notify-form input {
             padding: 1rem 1.5rem;
             border: 2px solid rgba(255, 255, 255, 0.2);
@@ -243,10 +252,16 @@
             <button class="cta-button cta-secondary" onclick="learnMore()">Learn More</button>
         </div>
 
-        <form class="notify-form" id="notifyForm" onsubmit="handleSubmit(event)">
-            <input type="email" placeholder="Enter your email" required>
+        <form class="notify-form" id="notifyForm" action="https://formspree.io/f/xyzbrzwq" method="POST" onsubmit="handleSubmit(event)">
+            <input type="email" name="email" placeholder="Enter your email" required>
             <button type="submit" class="cta-button cta-primary">Notify Me</button>
         </form>
+
+        <div class="thank-you-message" id="thankYouMessage">
+            <p style="color: #a0a0c0; font-size: 1.1rem; animation: fadeIn 0.5s ease;">
+                ✨ Thank you for showing interest! We will inform you when we go live.
+            </p>
+        </div>
 
         <div class="countdown">
             <div class="countdown-item">
@@ -363,7 +378,7 @@
 
         // Countdown Timer - Set your actual launch date here
         // Example: December 2, 2025 at midnight
-        const launchDate = new Date('2026-01-01T00:00:00').getTime();
+        const launchDate = new Date('2025-12-02T00:00:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -390,15 +405,35 @@
         }
 
         function learnMore() {
-            alert('Get ready to witness an academic revolution - Stay tuned!');
+            alert('Visual knowledge representation that brings learning to life. Stay tuned for the revolution in education technology!');
         }
 
         function handleSubmit(e) {
             e.preventDefault();
-            const email = e.target.querySelector('input').value;
-            alert(`Thank you! We'll notify ${email} when we launch.`);
-            e.target.reset();
-            toggleNotify();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            // Submit to Formspree
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Hide form and show thank you message
+                    form.classList.remove('active');
+                    document.getElementById('thankYouMessage').classList.add('active');
+                    
+                    // Also hide the "Get Early Access" button
+                    document.querySelector('.cta-primary').style.display = 'none';
+                } else {
+                    alert('Oops! There was a problem submitting your email. Please try again.');
+                }
+            }).catch(error => {
+                alert('Oops! There was a problem submitting your email. Please try again.');
+            });
         }
 
         // Mouse interaction
