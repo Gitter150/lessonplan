@@ -14,7 +14,7 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #0a0a0f;
-            overflow: hidden;
+            overflow: auto; /* CHANGED from hidden to allow scrolling */
             color: #fff;
         }
 
@@ -33,22 +33,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh; /* Use min-height to ensure it fills viewport but can be larger */
             text-align: center;
             padding: 2rem;
         }
 
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            margin-bottom: 3rem;
+        /* REPLACED old .logo style with .logo-img */
+        .logo-img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 2rem;
             opacity: 0;
             animation: fadeInDown 1s ease forwards 0.3s;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            /* THIS IS THE NEW FIX: 
+              We make the logo white and glowing to match the text.
+            */
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5)) grayscale(1) brightness(5);
         }
 
         h1 {
@@ -99,6 +99,10 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            
+            /* ENLARGED BUTTON */
+            padding: 1.2rem 3.5rem;
+            font-size: 1.1rem;
         }
 
         .cta-primary:hover {
@@ -106,6 +110,7 @@
             box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6);
         }
 
+        /* REMOVED .cta-secondary styles as button is gone, but keeping for reference if needed */
         .cta-secondary {
             background: rgba(255, 255, 255, 0.05);
             color: white;
@@ -118,6 +123,8 @@
             border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
         }
+        /* End of secondary styles */
+
 
         .notify-form {
             display: none;
@@ -237,20 +244,97 @@
                 min-width: 250px;
             }
         }
+
+        /* --- NEW FOOTER STYLES --- */
+        .site-footer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding: 4rem 2rem 2rem;
+            background: rgba(10, 10, 15, 0.5); /* Semi-transparent bg */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Glassy effect */
+            color: #a0a0c0;
+            margin-top: 5rem; /* Space from countdown */
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .footer-about, .footer-contact, .footer-links {
+            flex: 1;
+            min-width: 250px; /* So they don't get too squished */
+        }
+
+        .footer-logo {
+            width: 150px; /* Smaller logo for footer */
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer-about p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .site-footer h3 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .site-footer a {
+            color: #a0a0c0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .site-footer a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+        /* --- END OF FOOTER STYLES --- */
+
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
     
     <div class="content">
-        <div class="logo">KNOWLEDGE NETWORK</div>
+        <img src="logo-removebg-preview.png" alt="Lesson Plan Logo" class="logo-img">
+        
         <h1>Coming Soon</h1>
         <p class="tagline">Where ideas connect, knowledge expands, and learning comes alive</p>
         
         <div class="cta-container">
             <button class="cta-button cta-primary" onclick="toggleNotify()">Get Early Access</button>
-            <button class="cta-button cta-secondary" onclick="learnMore()">Learn More</button>
-        </div>
+            </div>
 
         <form class="notify-form" id="notifyForm" action="https://formspree.io/f/xyzbrzwq" method="POST" onsubmit="handleSubmit(event)">
             <input type="email" name="email" placeholder="Enter your email" required>
@@ -283,6 +367,36 @@
         </div>
     </div>
 
+    <footer class="site-footer">
+        <div class="footer-content">
+            
+            <div class="footer-about">
+                <img src="logo-removebg-preview.png" alt="Lesson Plan Logo" class="footer-logo">
+                <p>Revolutionizing education through connected knowledge graphs. Our mission is to make learning intuitive and accessible for everyone.</p>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><strong>Email:</strong> <a href="mailto:lessonplan1025@gmail.com">lessonplan1025@gmail.com</a></p>
+                <p><strong>Phone:</strong> +91 (805) 051-2005</p>
+                <p><strong>Address:</strong> 2nd Floor, Bhagya Lakshmi Complex 10/B, Kogilu Main Road, Prakruthi Nagar, Yelahanka, Bengaluru-560064</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Lesson Plan Pvt Ltd. All rights reserved.</p>
+        </div>
+    </footer>
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
@@ -405,6 +519,7 @@
         }
 
         function learnMore() {
+            // This function is no longer used by a button, but we'll leave it
             alert('Visual knowledge representation that brings learning to life. Stay tuned for the revolution in education technology!');
         }
 
